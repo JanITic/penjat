@@ -81,7 +81,7 @@ function jugarAhorcado(palabraAdivinar) {
 }
 
 // Función para iniciar el juego y manejar las opciones
-function iniciarJoc() {
+function iniciarJuego() {
   while (true) {
     var promptJugar = prompt("Tria una opcio: (1, 2, 3)");
 
@@ -90,9 +90,9 @@ function iniciarJoc() {
       jugarAhorcado(palabra);
     } else if (promptJugar === "2") {
       // Muestra las estadísticas del juego
-      console.log('Total de partidas: ' + totalPartidas==partidasGanadas+partidasPerdidas);
-      console.log('Partidas ganadas: ' + partidasGanadas);
-      console.log('Partidas perdidas: ' + partidasPerdidas);
+      console.log('Total de partidas: ' + (totalPartidas=partidasGanadas+partidasPerdidas));
+      console.log('Partidas ganadas: (' + ((partidasGanadas/totalPartidas)*100).toFixed(2) + '%) ' + partidasGanadas);
+      console.log('Partidas perdidas: (' + ((partidasPerdidas/totalPartidas)*100).toFixed(2) + '%) ' + partidasPerdidas);
     } else if (promptJugar === "3") {
       console.log("Saliendo del juego.");
       break;
@@ -103,4 +103,4 @@ function iniciarJoc() {
 }
 
 // Inicia el juego
-iniciarJoc();
+iniciarJuego();
