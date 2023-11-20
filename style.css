@@ -1,7 +1,13 @@
+/* Definir fuente importada*/
+@font-face {
+    font-family: 'GROBOLD';
+    src: url('GROBOLD.ttf') format('truetype');
+}
+
 /* Estilos para el cuerpo */
 body {
     text-align: center;
-    font-family: 'Times New Roman', Times, serif;
+    font-family: 'GROBOLD';
     margin-top: 50px;
     background-image: url('img/fondo.png');
     background-size: cover;
@@ -37,7 +43,7 @@ button {
     background-color: #CD853F;
     color: #ffffff;
     cursor: pointer;
-    font-family: 'Times New Roman', Times, serif;
+    font-family: 'GROBOLD';
     text-transform: uppercase;
     transition: background-color 0.3s, color 0.3s;
 }
@@ -50,20 +56,24 @@ button {
 
 /* Estilos para botón "Jugar" */
 .jugar {
+    font-family: 'GROBOLD';
     background-color: rgb(47, 155, 47);
     color: white;
 }
 
 /* Estilos para botón "Estadísticas" */
-.estadisticas {
+.estadistiques {
+    font-family: 'GROBOLD';
     background-color: rgb(100, 100, 168);
     color: white;
 }
 
 /* Estilos para párrafos */
 p {
-    font-family: 'Times New Roman', Times, serif;
+    font-family: 'GROBOLD';
+    
     font-size: 20px;
+    color: white;
 }
 
 /* Estilos para título principal */
@@ -71,6 +81,7 @@ h1 {
     font-size: 38px;
     text-align: left;
     margin-left: 20px;
+    color: rgb(79, 75, 75);
 }
 
 /* Estilos para la imagen del ahorcado */
@@ -85,9 +96,12 @@ h1 {
 #letrasUsadas {
     margin-top: -340px;
     margin-left: 700px;
+    
 }
 
 /* Estilos para texto dentro del contenedor de ahorcado */
 #ahorcado p {
     font-size: 40px;
+    font-family: 'GROBOLD';
+    color: white;
 }
