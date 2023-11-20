@@ -3,10 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <script src="penjat.js"></script>
+    <title>Ahorcado</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-    
+    <h1>AHORCADO</h1>
+    <div>
+        <button class="jugar" onclick="nuevaPartida()">Start</button>
+        <button class="estadistiques" onclick="estats()">Estats</button>
+        <button class="estadistiques" onclick="borrarEstats()">Borrar estats</button>
+    </div>
+    <div id="ahorcado"></div>
+    <div id="abecedario"></div>
+    <img src="" id="imagen"/>
+    <div id="letrasUsadas"></div>
+
+    <script src="penjat.js"></script>
 </body>
 </html>

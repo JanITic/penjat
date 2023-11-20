@@ -1,106 +1,169 @@
-// Muestra las opciones del juego
-console.log("1. Iniciar un juego");
-console.log("2. Estadísticas");
-console.log("3. Salir");
+// Letra introducida por el usuario
+let letra = ""; 
+// Palabra que el usuario debe adivinar
+let palabra = "";  
+// Representación oculta de la palabra por adivinar  
+let oculta = "";   
+// Número máximo de intentos permitidos  
+let intentos = 6;   
+// Contador de intentos fallidos 
+let fallos = 0;   
+// Referencia al elemento HTML para mostrar la palabra oculta   
+let p = "";  
+// Letras que el usuario ya ha intentado y no están en la palabra        
+let usadas = "";     
 
-// Inicializa variables para estadísticas del juego
-var totalPartidas = 0;
-var partidasGanadas = 0;
-var partidasPerdidas = 0;
 
-// Función para jugar al ahorcado con una palabra dada
-function jugarAhorcado(palabraAdivinar) {
-  // Inicialización de variables para el juego
-  var palabraAdivinada = new Array(palabraAdivinar.length).fill("_");
-  var intentosMaximos = 6;
-  var letrasFalladas = [];
-  var intentos = 0;
-  var adivinada = false;
+// Obtener las estadísticas del Local Storage o iniciarlas en 0 si no existen
+let ganadas = localStorage.getItem("ganadas") || 0;
+let perdidas = localStorage.getItem("perdidas") || 0;
 
-  // Bucle principal del juego
-  while (intentos < intentosMaximos && !adivinada) {
-    var palabraMostrada = "";
-
-    // Construye la palabra mostrada con las letras adivinadas hasta el momento
-    for (var i = 0; i < palabraAdivinar.length; i++) {
-      palabraMostrada += palabraAdivinada[i] + " ";
-    }
-
-    // Muestra la palabra con las letras adivinadas y espacios
-    console.log(palabraMostrada);
-
-    // Solicita al usuario introducir una letra
-    var letra = prompt("Introduce una letra:");
-
-    // Verifica si la entrada del usuario es válida
-    if (letra.length !== 1 || !letra.match(/[a-zA-Z]/)) {
-      console.log("Por favor, introduce una sola letra válida.");
-      continue;
-    }
-
-    var letraAdivinada = false;
-
-    // Verifica si la letra introducida está en la palabra a adivinar
-    for (var i = 0; i < palabraAdivinar.length; i++) {
-      if (palabraAdivinar[i] === letra) {
-        palabraAdivinada[i] = letra;
-        letraAdivinada = true;
-      }
-    }
-
-    // Manejo de letras no adivinadas
-    if (!letraAdivinada) {
-      letrasFalladas.push(letra);
-      intentos++;
-    }
-
-    // Verifica si se ha adivinado la palabra por completo
-    adivinada = palabraAdivinada.every(function (letra) {
-      return letra !== "_";
-    });
-
-    // Muestra mensajes de victoria o derrota
-    if (adivinada) {
-      console.log("¡Enhorabuena, has adivinado la palabra: " + palabraAdivinar + "!");
-      partidasGanadas++;
-    } else if (intentos === intentosMaximos) {
-      console.log("Has agotado tus intentos. La palabra era: " + palabraAdivinar);
-      partidasPerdidas++;
-    }
-
-    // Muestra las letras falladas hasta el momento
-    var letrasFalladasString = "";
-    for (var j = 0; j < letrasFalladas.length; j++) {
-      letrasFalladasString += letrasFalladas[j];
-      if (j < letrasFalladas.length - 1) {
-        letrasFalladasString += ", ";
-      }
-    }
-    console.log("Letras falladas " + intentos + "/" + intentosMaximos + ": " + letrasFalladasString);
-  }
+// Función para mostrar las estadísticas en una nueva ventana
+function estats() {
+    let stats = window.open("", "_blank"); // Abrir una nueva ventana en blanco
+    stats.document.write("Total de partides: " + (ganadas + perdidas) + "<br>"); // Mostrar el total de partidas
+    // Mostrar el porcentaje de partidas ganadas y perdidas junto con el número de partidas
+    stats.document.write("Partides guanyades (" + (ganadas / (ganadas + perdidas) * 100).toFixed(2) + "%): " + ganadas + "<br>");
+    stats.document.write("Partides perdudes (" + (perdidas / (ganadas + perdidas) * 100).toFixed(2) + "%): " + perdidas);
 }
 
-// Función para iniciar el juego y manejar las opciones
-function iniciarJuego() {
-  while (true) {
-    var promptJugar = prompt("Tria una opcio: (1, 2, 3)");
+// Función para borrar las estadísticas y reiniciar los contadores
+function borrarEstats() {
+    localStorage.setItem("ganadas", 0); // Establecer las partidas ganadas en 0 en el Local Storage
+    localStorage.setItem("perdidas", 0); // Establecer las partidas perdidas en 0 en el Local Storage
+    ganadas = 0; // Establecer las partidas ganadas en 0 en la memoria
+    perdidas = 0; // Establecer las partidas perdidas en 0 en la memoria
+    alert("Estadísticas borradas."); // Mostrar un mensaje de alerta
+}
 
-    if (promptJugar === "1") {
-      var palabra = prompt("Introduce una palabra para adivinar:");
-      jugarAhorcado(palabra);
-    } else if (promptJugar === "2") {
-      // Muestra las estadísticas del juego
-      console.log('Total de partidas: ' + (totalPartidas=partidasGanadas+partidasPerdidas));
-      console.log('Partidas ganadas: (' + ((partidasGanadas/totalPartidas)*100).toFixed(2) + '%) ' + partidasGanadas);
-      console.log('Partidas perdidas: (' + ((partidasPerdidas/totalPartidas)*100).toFixed(2) + '%) ' + partidasPerdidas);
-    } else if (promptJugar === "3") {
-      console.log("Saliendo del juego.");
-      break;
+// Función para comenzar una nueva partida
+function nuevaPartida() {
+    // Reiniciar valores de juego
+    intentos = 6;
+    fallos = 0;
+    usadas = "";
+    let ocultaEspacios = "";
+    let botones = "";
+    oculta = "";
+
+    palabra = prompt("Introduce una palabra"); // Pedir al usuario que introduzca una palabra
+
+    dibujarPenjat(fallos); // Dibujar el ahorcado con 0 fallos
+    escribirInfo(fallos, usadas); // Mostrar la información de letras falladas y usadas
+    
+    // Verificar si la palabra es nula o está vacía y pedir al usuario que introduzca una palabra válida
+    while (palabra == null || palabra.length < 1) {
+        palabra = prompt("Introduce una palabra");
+    }
+
+    let letras = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"; // Cadena de letras del abecedario
+
+    // Generar la palabra oculta con guiones bajos y espacios
+    for (let i = 0; i < palabra.length; i++) {
+        oculta = "_" + oculta;
+        ocultaEspacios = "_ " + ocultaEspacios;
+    }
+    p = document.getElementById('ahorcado'); // Obtener el elemento con el id 'ahorcado'
+    p.innerHTML = ""; // Limpiar el contenido existente
+    p.innerHTML = `<p>${ocultaEspacios}</p>`; // Mostrar la palabra oculta con guiones y espacios
+
+    botones = document.getElementById('abecedario'); // Obtener el elemento con el id 'abecedario'
+    botones.innerHTML = ""; // Limpiar el contenido existente
+
+    // Crear botones para cada letra del abecedario
+    for (let i = 0; i < letras.length; i++) {
+        botones.innerHTML += `<button id="${letras[i]}" onclick='recibirLetra("${letras[i]}")'>${letras[i]}</button>`;
+    }
+}
+
+// Función para recibir la letra seleccionada por el usuario
+function recibirLetra(letraDada) {
+    letra = letraDada; // Establecer la letra seleccionada
+    let resultado = "";
+
+    if (comprobarLetra(letra, palabra)) {
+        resultado = escribirPalabraOculta(letra, palabra, oculta);
+        oculta = resultado;
+        resultado = resultado.join(" ");
+        p = document.getElementById('ahorcado');
+        p.innerHTML = `<p>${resultado}</p>`;
+
+        if (comprobarGuion(oculta)) {
+            ganadas++;
+            setTimeout(function () {
+                alert("¡Has ganado!");
+            }, 100);
+        }
     } else {
-      console.log("Opción no válida. Por favor, elige 1, 2 o 3.");
+        if (!usadas.includes(letra)) {
+            usadas = letra + "," + usadas;
+            intentos--;
+            fallos++;
+            dibujarPenjat(fallos);
+            escribirInfo(fallos, usadas);
+        }
+        if (intentos == 0) {
+            perdidas++;
+            setTimeout(function () {
+                alert("¡Has perdido!");
+            }, 100);
+        }
     }
-  }
+}   
+
+// Función para dibujar el ahorcado según los fallos
+function dibujarPenjat(falladas){
+    let fotos = document.getElementById('imagen'); // Obtener el elemento con el id 'imagen'
+    fotos.src = ""; // Limpiar la fuente de la imagen
+    fotos.src = `./img/penjat_${falladas}.png`; // Establecer la nueva fuente de la imagen según los fallos
 }
 
-// Inicia el juego
-iniciarJuego();
+// Función para comprobar si la letra está en la palabra
+function comprobarLetra (letra, palabras){ 
+    let letraDada = letra.toLowerCase(); // Convertir la letra dada a minúsculas
+    let palabraDada = palabras.toLowerCase(); // Convertir la palabra a minúsculas
+    
+    for (let i = 0; i <= palabraDada.length - 1; i++){
+        if (palabraDada[i] == letraDada){
+           return true; // Si la letra está en la palabra, devuelve true
+        }
+    }
+    return false; // Si no, devuelve false
+}
+
+// Función para escribir la palabra oculta con las letras descubiertas
+function escribirPalabraOculta(letra, palabra, oculta) {
+    let palabraOculta = oculta; // Establecer la palabra oculta inicial
+    let palabraDada = palabra.toLowerCase(); // Convertir la palabra a minúsculas
+    let letraDada = letra.toLowerCase(); // Convertir la letra a minúsculas
+
+    let ocultaArray = ""; // Inicializar el array para la palabra oculta
+    ocultaArray = [...palabraOculta]; // Convertir la palabra oculta en un array
+    
+    for (let i = 0; i <= palabraDada.length - 1; i++){
+        if (palabraDada[i] == letraDada){
+            ocultaArray[i] = letraDada; // Si la letra está en la palabra, se muestra en la posición correspondiente
+        }
+    }
+    return ocultaArray; // Devolver la palabra oculta actualizada
+}  
+
+// Función para comprobar si hay algún guion bajo en la palabra oculta
+function comprobarGuion(palabraOculta) {
+    for (let i = 0; i < palabraOculta.length; i++) {
+        if (palabraOculta[i] === '_') {
+            return false; // Si encuentra al menos un guion bajo, devuelve false
+        }
+    }
+    return true; // Si no hay guiones, devuelve true indicando que se ha revelado completamente la palabra
+}
+
+// Función para escribir la información sobre las letras falladas
+function escribirInfo(falladas, usadas){
+    let info = document.getElementById('letrasUsadas'); // Obtener el elemento con el id 'letrasUsadas'
+    info.innerHTML = ""; // Limpiar el contenido existente
+    info.innerHTML = `<p>Letras falladas ${falladas}/6: ${usadas.toLowerCase()}</p>`; // Mostrar las letras falladas y usadas
+}
+
+
+

@@ -1,0 +1,93 @@
+/* Estilos para el cuerpo */
+body {
+    text-align: center;
+    font-family: 'Times New Roman', Times, serif;
+    margin-top: 50px;
+    background-image: url('img/fondo.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+/* Estilos para botones */
+button {
+    padding: 0.4em;
+    border-radius: 5px;
+    font-size: 24px;
+    margin-bottom: 0.5em;
+    cursor: pointer;
+}
+
+/* Contenedor de botones */
+#abecedario {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    width: 30%;
+    margin-left: auto;
+    margin-right: 440px;
+}
+
+/* Estilos para botones dentro de #abecedario */
+#abecedario button {
+    flex: 0 0 calc(16.6666% - 10px);
+    margin: 5px;
+    border: 2px solid #8B4513;
+    border-radius: 5px;
+    font-size: 15px;
+    background-color: #CD853F;
+    color: #ffffff;
+    cursor: pointer;
+    font-family: 'Times New Roman', Times, serif;
+    text-transform: uppercase;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* Estilos al pasar el cursor por encima de los botones */
+#abecedario button:hover {
+    background-color: #A0522D;
+    color: #fff;
+}
+
+/* Estilos para botón "Jugar" */
+.jugar {
+    background-color: rgb(47, 155, 47);
+    color: white;
+}
+
+/* Estilos para botón "Estadísticas" */
+.estadisticas {
+    background-color: rgb(100, 100, 168);
+    color: white;
+}
+
+/* Estilos para párrafos */
+p {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 20px;
+}
+
+/* Estilos para título principal */
+h1 {
+    font-size: 38px;
+    text-align: left;
+    margin-left: 20px;
+}
+
+/* Estilos para la imagen del ahorcado */
+#imagen {
+    margin-top: -390px;
+    margin-left: -900px;
+    width: 300px;
+    height: auto;
+}
+
+/* Estilos para el contenedor de letras usadas */
+#letrasUsadas {
+    margin-top: -340px;
+    margin-left: 700px;
+}
+
+/* Estilos para texto dentro del contenedor de ahorcado */
+#ahorcado p {
+    font-size: 40px;
+}
